@@ -4,13 +4,20 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CustomerRepository;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Ignore;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+
 
 /**
  * @ORM\Entity(repositoryClass=CustomerRepository::class)
- * @ApiResource
+ * @ApiResource(attributes={"pagination_enabled"=false})
+ * @ApiFilter(SearchFilter::class, properties={"firstname": "partial", "lastname", "company"})
+ * @ApiFilter(OrderFilter::class)
  */
 class Customer
 {
@@ -47,6 +54,7 @@ class Customer
     private $invoices;
 
     /**
+     * @Ignore()
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="customers")
      */
     private $user;
