@@ -6,8 +6,9 @@ use App\Entity\Invoice;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class InvoiceIncrementationController 
+class InvoiceIncrementationController extends AbstractController
 {
     private $manager;
     public function __construct(EntityManagerInterface $entityManager)
@@ -15,22 +16,12 @@ class InvoiceIncrementationController
         $this->manager = $entityManager;
     }
 
-    /**
-     * @Route(
-     *     name="invoice_post_increment",
-     *     path="/api/invoice/{id}/incrementation",
-     *     methods={"POST"},
-     *     defaults={
-     *         "_api_resource_class"=Invoice::class,
-     *         "_api_item_operation_name"="invoice_post_increment"
-     *     }
-     * )
-     */
+
     public function __invoke(Invoice $data): Invoice
     {
         $data->setChrono($data->getChrono() + 1);
 
-        $this->entityManager->flush();
+        $this->manager->flush();
 
         return $data;
     }

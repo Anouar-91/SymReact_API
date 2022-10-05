@@ -22,6 +22,16 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *      }
  *  }
  * },
+ * itemOperations={
+ *      "GET",
+ *      "PUT",
+ *      "DELETE",
+ *      "increment"={
+ *          "method"="POST",
+ *          "path"="/invoices/{id}/increment",
+ *          "controller"="App\Controller\InvoiceIncrementationController"
+ *      }
+ * },
  * normalizationContext={
  *      "groups"={"invoices_read"}
  * },
