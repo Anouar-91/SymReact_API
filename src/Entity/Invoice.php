@@ -11,6 +11,8 @@ use App\Controller\InvoiceIncrementationController;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=InvoiceRepository::class)
@@ -38,7 +40,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  * attributes={
  *      "pagination_items_per_page": 20, 
  *      "order": {"sentAt":"desc"}
- * }
+ * },
+ * denormalizationContext={"disable_type_enforcement"= true}
  * )
  * @ApiFilter(OrderFilter::class)
  */
@@ -56,19 +59,26 @@ class Invoice
     /**
      * @ORM\Column(type="float")
      * @Groups({"invoices_read", "customers_read", "invoices_subresource"})
-
+     * @Assert\NotBlank(message="Amount is required !")
+     * @Assert\Type(type="numeric", message="Amount format is numeric  !")
      */
     private $amount;
 
     /**
      * @ORM\Column(type="datetime")
      * @Groups({"invoices_read", "customers_read"})
+     * @Assert\DateTime(message="Format is wrong")
+     * @Assert\NotBlank(message="SentAt is required !")
+
      */
     private $sentAt;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Status is required !")
      * @Groups({"invoices_read", "customers_read"})
+     * @Assert\Choice(choices={"SENT", "PAID", "CANCELLED" }, message="Le status must to be SENT, PAID or CANCELLED")
+
      */
     private $status;
 
@@ -82,6 +92,8 @@ class Invoice
     /**
      * @ORM\Column(type="integer")
      * @Groups({"invoices_read", "customers_read"})
+     * @Assert\NotBlank(message="Chrono is required !")
+
      */
     private $chrono;
 

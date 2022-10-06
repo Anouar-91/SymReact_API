@@ -8,13 +8,16 @@ use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ApiResource
-
+ * @UniqueEntity("email", message="An User with this email already exist")
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -30,6 +33,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Groups({"customers_read", "invoices_read"})
+     * @Assert\NotBlank(message="Email is required !")
+     * @Assert\Email(message="Email format not valid !")
      */
     private $email;
 
@@ -41,19 +46,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Password is required !")
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"customers_read", "invoices_read"})
+     * @Assert\NotBlank(message="Firstname is required !")
+
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"customers_read", "invoices_read"})
-
+     * @Assert\NotBlank(message="Lastname is required !")
      */
     private $lastname;
 
