@@ -67,7 +67,6 @@ class Invoice
     /**
      * @ORM\Column(type="datetime")
      * @Groups({"invoices_read", "customers_read"})
-     * @Assert\DateTime(message="Format is wrong")
      * @Assert\NotBlank(message="SentAt is required !")
 
      */
