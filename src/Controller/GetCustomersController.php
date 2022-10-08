@@ -2,12 +2,12 @@
 
 namespace App\Controller;
 
-use App\Entity\Invoice;
+use App\Entity\User;
 use App\Repository\CustomerRepository;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Security\Core\Security;
 
 
 class GetCustomersController extends AbstractController
@@ -23,7 +23,7 @@ class GetCustomersController extends AbstractController
 
     public function __invoke()
     {
-        if($this->security->isGranted("ROLE_ADMIN", $this->security->getUser())){
+        if($this->security->isGranted("ROLE_ADMIN", $this->security->getUser()) || !$this->security->getUser() instanceof User ){
             return $this->customerRepo->findAll();
        }
        $customers =  $this->customerRepo->findBy(["user" => $this->security->getUser()]);
