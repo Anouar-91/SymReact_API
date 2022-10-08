@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Security;
 
 
-class GetCustomerController extends AbstractController
+class GetCustomersController extends AbstractController
 {
     private $customerRepo;
     private $security;
@@ -23,6 +23,9 @@ class GetCustomerController extends AbstractController
 
     public function __invoke()
     {
+        if($this->security->isGranted("ROLE_ADMIN", $this->security->getUser())){
+            return $this->customerRepo->findAll();
+       }
        $customers =  $this->customerRepo->findBy(["user" => $this->security->getUser()]);
        return $customers;
        

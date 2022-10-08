@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          "GET"={
  *               "method": "GET",
  *               "path"="/customers",
- *               "controller"="App\Controller\GetCustomerController"
+ *               "controller"="App\Controller\GetCustomersController"
  *          }
  *      },
  *      itemOperations={"GET", "PUT", "DELETE"},

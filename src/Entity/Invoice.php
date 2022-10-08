@@ -24,6 +24,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *      }
  *  }
  * },
+ *      collectionOperations={
+ *          "POST",
+ *          "GET"={
+ *               "method": "GET",
+ *               "path"="/invoices",
+ *               "controller"="App\Controller\GetInvoicesController"
+ *          }
+ *      },
  * itemOperations={
  *      "GET",
  *      "PUT",
