@@ -20,15 +20,22 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=CustomerRepository::class)
  * @ApiResource(
- * collectionOperations={"GET", "POST"},
- * itemOperations={"GET", "PUT", "DELETE"},
- * normalizationContext={
- * "groups"={"customers_read"}
- * },
- * subresourceOperations={
- * "invoices_get_subresource"={"path"="/customers/{id}/invoices"}
- * },
- * attributes={"pagination_enabled"=false}
+ *      collectionOperations={
+ *          "POST",
+ *          "GET"={
+ *               "method": "GET",
+ *               "path"="/customers",
+ *               "controller"="App\Controller\GetCustomerController"
+ *          }
+ *      },
+ *      itemOperations={"GET", "PUT", "DELETE"},
+ *      normalizationContext={
+ *          "groups"={"customers_read"}
+ *      },
+ *      subresourceOperations={
+ *          "invoices_get_subresource"={"path"="/customers/{id}/invoices"}
+ *      },
+ *      attributes={"pagination_enabled"=false}
  * )
  * @ApiFilter(SearchFilter::class, properties={"firstname": "partial", "lastname", "company"})
  * @ApiFilter(OrderFilter::class)
