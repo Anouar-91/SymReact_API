@@ -22,11 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *      collectionOperations={
  *          "POST",
- *          "GET"={
- *               "method": "GET",
- *               "path"="/customers",
- *               "controller"="App\Controller\GetCustomersController"
- *          }
+ *          "GET"
  *      },
  *      itemOperations={"GET", "PUT", "DELETE"},
  *      normalizationContext={
@@ -35,7 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *      subresourceOperations={
  *          "invoices_get_subresource"={"path"="/customers/{id}/invoices"}
  *      },
- *      attributes={"pagination_enabled"=false}
+ *      attributes={"pagination_enabled"=false, "pagination_client_items_per_page"=true}
  * )
  * @ApiFilter(SearchFilter::class, properties={"firstname": "partial", "lastname", "company"})
  * @ApiFilter(OrderFilter::class)
