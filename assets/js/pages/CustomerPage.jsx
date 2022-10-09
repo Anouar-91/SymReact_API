@@ -1,62 +1,97 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import Pagination from '../components/Pagination';
+import axios from 'axios';
+import CustomersAPI from '../services/CustomersAPI';
 
 export default function CustomerPage() {
 
   const [customers, setCustomers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [search, setSearch] = useState("");
+
+  const fetchCustomers = async () => {
+    try{
+      const data = await CustomersAPI.findAll();
+      setCustomers(data)
+    }catch(error){
+      console.log(error.response)
+    }
+  }
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/api/customers')
-      .then((response) => {
-        console.log(response.data["hydra:member"])
-        setCustomers(response.data["hydra:member"]);
-      })
-      .catch(error => console.log(error.response))
+    fetchCustomers();
   }, [])
 
+  // First method with then and catch
   const handleDelete = (id) => {
     const copyCustomers = [...customers];
     setCustomers(customers.filter(customer => customer.id !== id))
-    axios.delete('http://127.0.0.1:8000/api/customers/' + id)
-      .then((response) => {
-        console.log(response)
-      })
-      .catch((error) => {
+      CustomersAPI.delete(id)
+      .then(response => console.log("ok"))
+      .catch(error => {
         setCustomers(copyCustomers);
         console.log(error.response)
-      })
-  }
+      });
+  };
+
+  // second method with try and catch
+  const handleDelete2 = async (id) => {
+    const copyCustomers = [...customers];
+    setCustomers(customers.filter(customer => customer.id !== id))
+    try{
+      await CustomersAPI.delete(id)
+      console.log("ok")
+    }catch(error){
+      setCustomers(copyCustomers);
+      console.log(error.response)
+    }
+  };
+
+  //method 3
+  const handleDelete3 =  (id) => {
+    const copyCustomers = [...customers];
+    setCustomers(customers.filter(customer => customer.id !== id))
+    axios.delete('http://127.0.0.1:8000/api/customers/' + id)
+          .then(response => console.log(ok))
+          .catch(error => {
+            console.log(error.response)
+            setCustomers(copyCustomers);
+          })
+    }
+
+
 
   const handleChangePage = (page) => {
     setCurrentPage(page)
   }
 
-/*   const nextPage = () => {
-    if (currentPage == (pagesCount - 1)) {
+  const handleSearch = e => {
+    const value = e.currentTarget.value;
+    setSearch(value)
+    setCurrentPage(1)
 
-    }
-    else {
-      setCurrentPage(currentPage + 1)
-    }
   }
-  const previousPage = () => {
-    if (currentPage == 1) {
-    }
-    else {
-      setCurrentPage(currentPage - 1)
-    }
-  } */
 
   const itemsPerPage = 10;
 
+  const filteredCustomers = customers.filter(
+    c => 
+    c.firstname.toLowerCase().includes(search.toLowerCase()) ||
+    c.lastname.toLowerCase().includes(search.toLowerCase()) ||
+    c.email.toLowerCase().includes(search.toLowerCase()) ||
+    (c.company &&  c.company.toLowerCase().includes(search.toLowerCase()))
+
+    )
+
   const start = currentPage * itemsPerPage - itemsPerPage
-  const paginatedCustomers = customers.slice(start, start + itemsPerPage);
+  const paginatedCustomers = filteredCustomers.slice(start, start + itemsPerPage);
 
   return (
     <>
       <h1>Liste des clients</h1>
+      <div className="form-group mb-5 mt-5">
+        <input type="text" placeholder="Rechercher..." value={search} onChange={handleSearch} className="form-control" />
+      </div>
       <table className="table table-hover table-responsive">
         <thead>
           <tr>
@@ -80,7 +115,7 @@ export default function CustomerPage() {
               <td >{customer.totalAmount.toLocaleString()}€</td>
               <td>
                 <button
-                  onClick={() => handleDelete(customer.id)}
+                  onClick={() => handleDelete3(customer.id)}
                   disabled={customer.invoices.length > 0 ? true : false}
                   className="btn btn-sm btn-danger">Supprimer
                 </button>
@@ -90,7 +125,7 @@ export default function CustomerPage() {
 
         </tbody>
       </table>
-      <Pagination currentPage={currentPage} itemsPerPage={itemsPerPage} length={customers.length} onPageChange={handleChangePage}/>
+      <Pagination currentPage={currentPage} itemsPerPage={itemsPerPage} length={filteredCustomers.length} onPageChange={handleChangePage} />
 
     </>
   )

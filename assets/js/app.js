@@ -26,7 +26,7 @@ const App = () => {
             <Navbar />
             <main className="container pt-5">
                 <Routes>
-                <Route path="/customer" element={<CustomerPageWithPagination />} />
+                <Route path="/customer" element={<CustomerPage />} />
 
                 <Route path="/" element={<HomePage />} />
                 
