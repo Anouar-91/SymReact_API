@@ -18,6 +18,7 @@ import HomePage from './pages/HomePage';
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import CustomerPage from './pages/CustomerPage';
 import CustomerPageWithPagination from './pages/CustomerPageWithPagination';
+import InvoicePage from './pages/InvoicePage';
 
 
 const App = () => {
@@ -27,6 +28,7 @@ const App = () => {
             <main className="container pt-5">
                 <Routes>
                 <Route path="/customer" element={<CustomerPage />} />
+                <Route path="/invoice" element={<InvoicePage />} />
 
                 <Route path="/" element={<HomePage />} />
                 
