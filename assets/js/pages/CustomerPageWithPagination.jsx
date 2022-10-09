@@ -2,19 +2,22 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import Pagination from '../components/Pagination';
 
-export default function CustomerPage() {
+export default function CustomerPageWithPagination() {
 
   const [customers, setCustomers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
+  const itemsPerPage = 10;
+
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/api/customers')
+    axios.get(`http://127.0.0.1:8000/api/customers?pagination=true&itemsPerPage=${itemsPerPage}&page=${currentPage}`)
       .then((response) => {
-        console.log(response.data["hydra:member"])
+        setTotalItems(response.data["hydra:totalItems"]);
         setCustomers(response.data["hydra:member"]);
       })
       .catch(error => console.log(error.response))
-  }, [])
+  }, [currentPage])
 
   const handleDelete = (id) => {
     const copyCustomers = [...customers];
@@ -33,30 +36,9 @@ export default function CustomerPage() {
     setCurrentPage(page)
   }
 
-/*   const nextPage = () => {
-    if (currentPage == (pagesCount - 1)) {
-
-    }
-    else {
-      setCurrentPage(currentPage + 1)
-    }
-  }
-  const previousPage = () => {
-    if (currentPage == 1) {
-    }
-    else {
-      setCurrentPage(currentPage - 1)
-    }
-  } */
-
-  const itemsPerPage = 10;
-
-  const start = currentPage * itemsPerPage - itemsPerPage
-  const paginatedCustomers = customers.slice(start, start + itemsPerPage);
-
   return (
     <>
-      <h1>Liste des clients</h1>
+      <h1>Liste des clients (pagination api platform)</h1>
       <table className="table table-hover table-responsive">
         <thead>
           <tr>
@@ -70,7 +52,7 @@ export default function CustomerPage() {
           </tr>
         </thead>
         <tbody>
-          {paginatedCustomers.map((customer) =>
+          {customers.map((customer) =>
             <tr key={customer.id} >
               <td>{customer.id}</td>
               <td><a href="">{customer.lastname} {customer.firstname}</a></td>
@@ -90,7 +72,7 @@ export default function CustomerPage() {
 
         </tbody>
       </table>
-      <Pagination currentPage={currentPage} itemsPerPage={itemsPerPage} length={customers.length} onPageChange={handleChangePage}/>
+      <Pagination currentPage={currentPage} itemsPerPage={itemsPerPage} length={totalItems} onPageChange={handleChangePage}/>
 
     </>
   )

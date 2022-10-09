@@ -17,6 +17,7 @@ import Navbar from './components/Navbar';
 import HomePage from './pages/HomePage';
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import CustomerPage from './pages/CustomerPage';
+import CustomerPageWithPagination from './pages/CustomerPageWithPagination';
 
 
 const App = () => {
@@ -25,7 +26,7 @@ const App = () => {
             <Navbar />
             <main className="container pt-5">
                 <Routes>
-                <Route path="/customer" element={<CustomerPage />} />
+                <Route path="/customer" element={<CustomerPageWithPagination />} />
 
                 <Route path="/" element={<HomePage />} />
                 

@@ -11,9 +11,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 
-
-
-
 // quand tu feras une requête dans le but de récupérer une collection ou item, cette class intervient
 class CurrentUserExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface{
 
@@ -26,8 +23,6 @@ class CurrentUserExtension implements QueryCollectionExtensionInterface, QueryIt
     private function addWhere(QueryBuilder $queryBuilder,string $resourceClass){
         $user =  $this->security->getUser();
 
-
-
         if(($resourceClass === Customer::class || $resourceClass === Invoice::class) && !$this->security->isGranted("ROLE_ADMIN", $this->security->getUser()) && $user instanceof User){
              $rootAlias = $queryBuilder->getRootAlias()[0];
  
@@ -37,11 +32,9 @@ class CurrentUserExtension implements QueryCollectionExtensionInterface, QueryIt
              else if($resourceClass === Invoice::class){
                  $queryBuilder->join("$rootAlias.customer", "c")
                              ->andWhere("c.user = :user");
- 
              }
              $queryBuilder->setParameter("user", $user);
         }
- 
     }
 
     public function applyToCollection(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, string $operationName = null){
@@ -49,11 +42,7 @@ class CurrentUserExtension implements QueryCollectionExtensionInterface, QueryIt
         $this->addWhere($queryBuilder,$resourceClass );
         
     }
-
     public function applyToItem(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, array $identifiers, string $operationName = null, array $context = []){
         $this->addWhere($queryBuilder,$resourceClass );
     }
-
-
-
 }
