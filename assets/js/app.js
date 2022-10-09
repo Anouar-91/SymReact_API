@@ -20,8 +20,9 @@ import CustomerPage from './pages/CustomerPage';
 import CustomerPageWithPagination from './pages/CustomerPageWithPagination';
 import InvoicePage from './pages/InvoicePage';
 import LoginPage from './pages/LoginPage';
+import AuthAPI from './services/AuthAPI';
 
-
+AuthAPI.setup();
 const App = () => {
     return (
         <HashRouter>
