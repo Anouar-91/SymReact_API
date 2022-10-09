@@ -19,6 +19,7 @@ import { HashRouter, Routes, Route } from 'react-router-dom';
 import CustomerPage from './pages/CustomerPage';
 import CustomerPageWithPagination from './pages/CustomerPageWithPagination';
 import InvoicePage from './pages/InvoicePage';
+import LoginPage from './pages/LoginPage';
 
 
 const App = () => {
@@ -29,6 +30,7 @@ const App = () => {
                 <Routes>
                 <Route path="/customer" element={<CustomerPage />} />
                 <Route path="/invoice" element={<InvoicePage />} />
+                <Route path="/login" element={<LoginPage />} />
 
                 <Route path="/" element={<HomePage />} />
                 
