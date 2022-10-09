@@ -1,6 +1,12 @@
-import React from 'react'
+import React from 'react';
+import AuthAPI from '../services/AuthAPI';
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
+
+    const handleLogout = () => {
+        AuthAPI.logout();
+    }
     return (
         <nav className="navbar navbar-expand-lg bg-light">
             <div className="container-fluid">
@@ -10,24 +16,22 @@ export default function Navbar() {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-
                         <li className="nav-item">
-                            <a className="nav-link" href="#">Clients</a>
+                            <Link to={"customer"} class="nav-link">Clients      </Link>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#">Factures</a>
+                            <Link to={"invoice"} className="nav-link" href="#">Factures </Link>
                         </li>
                     </ul>
                     <ul className="navbar-nav ml-auto">
-                    <li className="nav-item">
+                        <li className="nav-item">
                             <a href="" className="nav-link">Inscription</a>
                         </li>
                         <li className="nav-item">
-                            <a href="" className="btn btn-success">Connexion</a>
+                            <Link to={"login"} className="btn btn-success">Connexion</Link>
                         </li>
-   
                         <li className="nav-item">
-                            <a href="" className="btn btn-danger">Déconnexion</a>
+                            <button onClick={handleLogout} className="btn btn-danger">Déconnexion</button>
                         </li>
                     </ul>
                 </div>

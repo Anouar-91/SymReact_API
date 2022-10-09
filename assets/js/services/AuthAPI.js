@@ -8,10 +8,16 @@ import axios from 'axios';
                 const token = response.data.token;
                 window.localStorage.setItem('authToken', token)
                 axios.defaults.headers["Authorization"] = "Bearer " + token;
-                return token;
             })
 }
 
-export default {
-    authenticate
+function logout(){
+    window.localStorage.removeItem('authToken')
+    delete axios.defaults.headers["Authorization"];
 }
+
+export default {
+    authenticate,
+    logout
+}
+
