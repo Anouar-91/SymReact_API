@@ -11,7 +11,7 @@ import '../styles/app.css';
 // start the Stimulus application
 import '../bootstrap';
 
-import React from "react";
+import React, {useState} from "react";
 import ReactDOM from 'react-dom';
 import Navbar from './components/Navbar';
 import HomePage from './pages/HomePage';
@@ -24,14 +24,16 @@ import AuthAPI from './services/AuthAPI';
 
 AuthAPI.setup();
 const App = () => {
+    const [isAuthenticated, setIsAuthenticated] = useState(true);
+    console.log(isAuthenticated)
     return (
         <HashRouter>
-            <Navbar />
+            <Navbar isAuthenticated={isAuthenticated}   onLogout={setIsAuthenticated}  />
             <main className="container pt-5">
                 <Routes>
-                <Route path="/customer" element={<CustomerPage />} />
+                <Route path="/customer" element={<CustomerPage />}  />
                 <Route path="/invoice" element={<InvoicePage />} />
-                <Route path="/login" element={<LoginPage />} />
+                <Route path="/login" element={<LoginPage onLogin={setIsAuthenticated} />} />
 
                 <Route path="/" element={<HomePage />} />
                 

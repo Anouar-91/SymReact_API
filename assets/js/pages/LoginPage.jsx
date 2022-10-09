@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios';
 import AuthAPI from '../services/AuthAPI'
 
-function LoginPage() {
+function LoginPage({onLogin}) {
     const [credentials, setCredentials] = useState({
         username: "",
         password: ""
@@ -25,7 +25,7 @@ function LoginPage() {
         try {
             const token = await AuthAPI.authenticate(credentials)
             setError("")
-            console.log(token)
+            onLogin(true)
         } catch (error) {
             console.log(error.response.data)
             setError("Aucun compte ne correspond à ces identifiants !")

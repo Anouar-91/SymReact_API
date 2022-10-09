@@ -2,10 +2,11 @@ import React from 'react';
 import AuthAPI from '../services/AuthAPI';
 import { Link } from "react-router-dom";
 
-export default function Navbar() {
+export default function Navbar({ isAuthenticated, onLogout }) {
 
     const handleLogout = () => {
         AuthAPI.logout();
+        onLogout(false)
     }
     return (
         <nav className="navbar navbar-expand-lg bg-light">
@@ -24,15 +25,22 @@ export default function Navbar() {
                         </li>
                     </ul>
                     <ul className="navbar-nav ml-auto">
+                        {!isAuthenticated ? (
+                            <>
                         <li className="nav-item">
-                            <a href="" className="nav-link">Inscription</a>
+                        <a href="" className="nav-link">Inscription</a>
                         </li>
                         <li className="nav-item">
                             <Link to={"login"} className="btn btn-success">Connexion</Link>
-                        </li>
-                        <li className="nav-item">
-                            <button onClick={handleLogout} className="btn btn-danger">Déconnexion</button>
-                        </li>
+                        </li></>)
+                            : (
+                                <li className="nav-item">
+                                    <button onClick={handleLogout} className="btn btn-danger">Déconnexion</button>
+                                </li>
+                            )
+                        }
+
+
                     </ul>
                 </div>
             </div>
