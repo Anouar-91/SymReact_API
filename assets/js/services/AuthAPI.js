@@ -20,7 +20,6 @@ function logout() {
 function setup() {
     // on check si on a un token
     const token = window.localStorage.getItem('authToken');
-
     //on check qu'on a bien un token et que la date est valide
     if (token) {
         const jwtData = jwtDecode(token);
@@ -35,9 +34,25 @@ function setup() {
     }
 }
 
+function isAuthenticated() {
+    const token = window.localStorage.getItem('authToken');
+    if (token) {
+        const jwtData = jwtDecode(token);
+        if (jwtData.exp * 1000 > (new Date().getTime())) {
+            return true;
+
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+
 export default {
     authenticate,
     logout,
-    setup
+    setup,
+    isAuthenticated
 }
 
