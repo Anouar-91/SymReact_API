@@ -40,9 +40,8 @@ const App = () => {
             <main className="container pt-5">
                 <Routes>
                     <Route element={<ProtectedRoute  />}>
-                        <Route path="/customer/new" element={<AddCustomerPage />} />
+                        <Route path="/customer/:id" element={<AddCustomerPage />} />
                         <Route path="/customer" element={<CustomerPage />} />
-                        <Route path="/customer/new" element={<AddCustomerPage />} />
                         <Route path="/invoice" element={<InvoicePage />} />
                     </Route>
                     <Route path="/login" element={<LoginPage  />} />
