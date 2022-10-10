@@ -100,16 +100,15 @@ export default function InvoicePage() {
           {paginatedInvoices.map((invoice) =>
             <tr key={invoice.id} >
               <td>{invoice.chrono}</td>
-              <td><a href="">{invoice.customer.lastname} {invoice.customer.firstname}</a></td>
+              <td><Link to={"/invoice/" +invoice.id}>{invoice.customer.lastname} {invoice.customer.firstname}</Link></td>
               <td>{formatDate(invoice.sentAt)}</td>
               <td> <span className={"badge rounded-pill text-bg-" + STATUS_CLASSES[invoice.status]}>{STAUS_LABELS[invoice.status]}</span> </td>
 
               <td >{invoice.amount.toLocaleString()}€</td>
               <td>
-                <button
-                  onClick={() => handleDelete(invoice.id)}
+              <Link to={"/invoice/" +invoice.id}
                   className="btn btn-sm btn-primary">Editer
-                </button>
+                  </Link>
                 &ensp;
                 <button
                   onClick={() => handleDelete(invoice.id)}
