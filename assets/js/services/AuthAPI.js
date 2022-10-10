@@ -8,6 +8,7 @@ function authenticate(credentials) {
             // je stock mon token dans le local storage
             const token = response.data.token;
             window.localStorage.setItem('authToken', token)
+            // je change le head de nos requete http en ajoutant le token
             axios.defaults.headers["Authorization"] = "Bearer " + token;
         })
 }
