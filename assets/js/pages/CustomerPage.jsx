@@ -113,7 +113,7 @@ export default function CustomerPage() {
           {paginatedCustomers.map((customer) =>
             <tr key={customer.id} >
               <td>{customer.id}</td>
-              <td><a href="">{customer.lastname} {customer.firstname}</a></td>
+              <td><Link to={"/customer/"+customer.id}>{customer.lastname} {customer.firstname}</Link></td>
               <td>{customer.email}</td>
               <td>{customer.company}</td>
               <td > <span >{customer.invoices.length}</span> </td>
