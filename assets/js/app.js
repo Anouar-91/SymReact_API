@@ -15,35 +15,25 @@ import React, { useState, useContext } from "react";
 import ReactDOM from 'react-dom';
 import Navbar from './components/Navbar';
 import HomePage from './pages/HomePage';
-import { HashRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
+import { HashRouter, Routes, Route} from 'react-router-dom';
 import CustomerPage from './pages/CustomerPage';
 import CustomerPageWithPagination from './pages/CustomerPageWithPagination';
 import InvoicePage from './pages/InvoicePage';
 import LoginPage from './pages/LoginPage';
 import AuthAPI from './services/AuthAPI';
 import AuthContext from './contexts/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 
 AuthAPI.setup();
 
-const ProtectedRoute = ({  redirectPath = '/login' }) => {
-    const { isAuthenticated} = useContext(AuthContext);
-
-    if (!isAuthenticated) {
-        return <Navigate to={redirectPath} replace />;
-    }
-    return <Outlet />;
-};
-
-
 const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(AuthAPI.isAuthenticated());
-    const contextValue = {
-        isAuthenticated: isAuthenticated,
-        setIsAuthenticated: setIsAuthenticated
-    };
 
     return (
-        <AuthContext.Provider value={contextValue}>
+        <AuthContext.Provider value={{
+            isAuthenticated: isAuthenticated,
+            setIsAuthenticated: setIsAuthenticated
+        }}>
         <HashRouter>
             <Navbar />
             <main className="container pt-5">
