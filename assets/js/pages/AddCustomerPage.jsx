@@ -31,8 +31,13 @@ function AddCustomerPage() {
         try {
             const response = await axios.post("http://127.0.0.1:8000/api/customers", customer)
             console.log(response.data)
+            setError=({})
         } catch (error) {
-            console.log(error.response)
+            const apiErrors = {}
+            error.response.data.violations.forEach((violation) => {
+                apiErrors[violation.propertyPath] = violation.message;
+            })
+            setError(apiErrors)
         }
     }
 
