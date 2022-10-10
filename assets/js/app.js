@@ -47,9 +47,7 @@ const App = () => {
                     </Route>
                     <Route path="/login" element={<LoginPage onLogin={setIsAuthenticated} />} />
                     <Route path="/" element={<HomePage />} />
-
                 </Routes>
-
             </main>
         </HashRouter>
     )
