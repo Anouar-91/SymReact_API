@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link,  useParams, useNavigate } from 'react-router-dom';
 import Field from "../components/forms/field";
 import axios from "axios";
+import CustomersAPI from "../services/CustomersAPI";
 
 function AddCustomerPage(props) {
     const [editing, setEditing] = useState(true);
@@ -11,8 +12,7 @@ function AddCustomerPage(props) {
 
     const fetchCustomer = async (id) => {
         try {
-            const data = await axios.get(`http://127.0.0.1:8000/api/customers/${id}`).then(response => response.data);
-            const { firstname, lastname, email, company } = data;
+            const { firstname, lastname, email, company } =await CustomersAPI.find(id);
             setCustomer({ firstname, lastname, email, company });
         } catch (error) {
             console.log(error.response)
