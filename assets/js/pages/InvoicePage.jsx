@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Pagination from '../components/Pagination';
 import InvoicesAPI from '../services/InvoicesAPI';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 
 export default function InvoicePage() {
 
@@ -21,11 +22,11 @@ export default function InvoicePage() {
   }
 
   const fetchInvoices = async () => {
-    try{
+    try {
       const data = await InvoicesAPI.findAll();
       setInvoices(data)
       console.log(data)
-    }catch(error){
+    } catch (error) {
       console.log(error.response)
     }
   }
@@ -34,17 +35,17 @@ export default function InvoicePage() {
     fetchInvoices();
   }, [])
 
-  const formatDate = (str) =>{
+  const formatDate = (str) => {
     return moment(str).format("DD/MM/YYYY");
   }
 
   const handleDelete = async (id) => {
     const copyInvoices = [...invoices];
     setInvoices(invoices.filter(invoice => invoice.id !== id))
-    try{
+    try {
       await InvoicesAPI.delete(id)
       console.log("ok")
-    }catch(error){
+    } catch (error) {
       setInvoices(copyInvoices);
       console.log(error.response)
     }
@@ -63,20 +64,24 @@ export default function InvoicePage() {
 
   const itemsPerPage = 20;
 
-  const filteredInvoices= invoices.filter(
-    i => 
-    i.customer.firstname.toLowerCase().includes(search.toLowerCase()) ||
-    i.customer.lastname.toLowerCase().includes(search.toLowerCase()) ||
-    STAUS_LABELS[i.status].toLowerCase().includes(search.toLowerCase())
+  const filteredInvoices = invoices.filter(
+    i =>
+      i.customer.firstname.toLowerCase().includes(search.toLowerCase()) ||
+      i.customer.lastname.toLowerCase().includes(search.toLowerCase()) ||
+      STAUS_LABELS[i.status].toLowerCase().includes(search.toLowerCase())
 
-    )
+  )
 
   const start = currentPage * itemsPerPage - itemsPerPage
   const paginatedInvoices = filteredInvoices.slice(start, start + itemsPerPage);
 
   return (
     <>
-      <h1>Liste des factures</h1>
+      <div className="d-flex justify-content-between align-items-center">
+        <h1>Liste des factures</h1>
+        <Link to="/invoice/new" className="btn btn-primary">Créer une facture</Link>
+      </div>
+
       <div className="form-group mb-5 mt-5">
         <input type="text" placeholder="Rechercher..." value={search} onChange={handleSearch} className="form-control" />
       </div>
@@ -97,14 +102,14 @@ export default function InvoicePage() {
               <td>{invoice.chrono}</td>
               <td><a href="">{invoice.customer.lastname} {invoice.customer.firstname}</a></td>
               <td>{formatDate(invoice.sentAt)}</td>
-              <td> <span className={"badge rounded-pill text-bg-" + STATUS_CLASSES[invoice.status] }>{STAUS_LABELS[invoice.status]}</span> </td>
+              <td> <span className={"badge rounded-pill text-bg-" + STATUS_CLASSES[invoice.status]}>{STAUS_LABELS[invoice.status]}</span> </td>
 
               <td >{invoice.amount.toLocaleString()}€</td>
               <td>
-              <button
+                <button
                   onClick={() => handleDelete(invoice.id)}
                   className="btn btn-sm btn-primary">Editer
-                </button>  
+                </button>
                 &ensp;
                 <button
                   onClick={() => handleDelete(invoice.id)}
@@ -117,7 +122,7 @@ export default function InvoicePage() {
 
         </tbody>
       </table>
- 
+
       <Pagination currentPage={currentPage} itemsPerPage={itemsPerPage} length={filteredInvoices.length} onPageChange={handleChangePage} />
 
 
