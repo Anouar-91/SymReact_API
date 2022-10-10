@@ -23,6 +23,7 @@ import LoginPage from './pages/LoginPage';
 import AuthAPI from './services/AuthAPI';
 import AuthContext from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import AddCustomerPage from './pages/AddCustomerPage';
 
 AuthAPI.setup();
 
@@ -39,7 +40,9 @@ const App = () => {
             <main className="container pt-5">
                 <Routes>
                     <Route element={<ProtectedRoute  />}>
+                        <Route path="/customer/new" element={<AddCustomerPage />} />
                         <Route path="/customer" element={<CustomerPage />} />
+                        <Route path="/customer/new" element={<AddCustomerPage />} />
                         <Route path="/invoice" element={<InvoicePage />} />
                     </Route>
                     <Route path="/login" element={<LoginPage  />} />

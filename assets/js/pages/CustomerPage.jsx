@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Pagination from '../components/Pagination';
 import axios from 'axios';
 import CustomersAPI from '../services/CustomersAPI';
+import { Link } from 'react-router-dom';
 
 export default function CustomerPage() {
 
@@ -88,7 +89,11 @@ export default function CustomerPage() {
 
   return (
     <>
+      <div className="d-flex justify-content-between align-items-center">
       <h1>Liste des clients</h1>
+      <Link to="/customer/new" className="btn btn-primary">Créer un client</Link>
+      </div>
+
       <div className="form-group mb-5 mt-5">
         <input type="text" placeholder="Rechercher..." value={search} onChange={handleSearch} className="form-control" />
       </div>
