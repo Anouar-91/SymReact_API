@@ -3,10 +3,11 @@ import axios from 'axios';
 import AuthAPI from '../services/AuthAPI'
 import { useNavigate } from "react-router-dom";
 import AuthContext from '../contexts/AuthContext';
+import Field from "../components/forms/field"
 
 
 function LoginPage() {
-    const {isAuthenticated, setIsAuthenticated} = useContext(AuthContext);
+    const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const [credentials, setCredentials] = useState({
@@ -45,16 +46,11 @@ function LoginPage() {
                 <div className="col-md-8">
                     <div className="card p-5">
                         <form onSubmit={handleSubmit} >
-                            <div className="form-group">
-                                <label htmlFor="username">Adresse email</label>
-                                <input onChange={handleChange} value={credentials.username} type="email" placeholder="Email de connexion"
-                                    className={(!error ? "form-control" : "form-control is-invalid")} id="username" name="username" />
-                                {error && <p className="invalid-feedback">{error}</p>}
-                            </div>
-                            <div className="form-group mt-3">
-                                <label htmlFor="password">Mot de passe</label>
-                                <input onChange={handleChange} value={credentials.password} type="password" placeholder="Mot de passe" className="form-control" id="password" name="password" />
-                            </div>
+                            <Field name="username" label="Adresse email" value={credentials.username} onChange={handleChange} placeholder="Email de connexion" type="email" error={error} />
+  
+                            <Field name="password" label="Mot de passe" value={credentials.password} onChange={handleChange} placeholder="Mot de passe" type="password" error="" />
+
+
                             <div className="form-group mt-3 text-center">
                                 <button className="btn btn-success">Connexion</button>
                             </div>
