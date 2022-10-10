@@ -11,7 +11,7 @@ import '../styles/app.css';
 // start the Stimulus application
 import '../bootstrap';
 
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import ReactDOM from 'react-dom';
 import Navbar from './components/Navbar';
 import HomePage from './pages/HomePage';
@@ -21,10 +21,13 @@ import CustomerPageWithPagination from './pages/CustomerPageWithPagination';
 import InvoicePage from './pages/InvoicePage';
 import LoginPage from './pages/LoginPage';
 import AuthAPI from './services/AuthAPI';
+import AuthContext from './contexts/AuthContext';
 
 AuthAPI.setup();
 
-const ProtectedRoute = ({ isAuthenticated, redirectPath = '/login' }) => {
+const ProtectedRoute = ({  redirectPath = '/login' }) => {
+    const { isAuthenticated} = useContext(AuthContext);
+
     if (!isAuthenticated) {
         return <Navigate to={redirectPath} replace />;
     }
@@ -34,22 +37,28 @@ const ProtectedRoute = ({ isAuthenticated, redirectPath = '/login' }) => {
 
 const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(AuthAPI.isAuthenticated());
-    console.log(isAuthenticated)
+    const contextValue = {
+        isAuthenticated: isAuthenticated,
+        setIsAuthenticated: setIsAuthenticated
+    };
 
     return (
+        <AuthContext.Provider value={contextValue}>
         <HashRouter>
-            <Navbar isAuthenticated={isAuthenticated} onLogout={setIsAuthenticated} />
+            <Navbar />
             <main className="container pt-5">
                 <Routes>
-                    <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
+                    <Route element={<ProtectedRoute  />}>
                         <Route path="/customer" element={<CustomerPage />} />
                         <Route path="/invoice" element={<InvoicePage />} />
                     </Route>
-                    <Route path="/login" element={<LoginPage onLogin={setIsAuthenticated} />} />
+                    <Route path="/login" element={<LoginPage  />} />
                     <Route path="/" element={<HomePage />} />
                 </Routes>
             </main>
         </HashRouter>
+        </AuthContext.Provider>
+
     )
 };
 

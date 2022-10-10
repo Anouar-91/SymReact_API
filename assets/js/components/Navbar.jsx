@@ -1,18 +1,21 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import AuthAPI from '../services/AuthAPI';
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import AuthContext from '../contexts/AuthContext'
 
 
-export default function Navbar({ isAuthenticated, onLogout }) {
+export default function Navbar() {
 
     const navigate = useNavigate();
+    const { isAuthenticated, setIsAuthenticated} = useContext(AuthContext);
 
     const handleLogout = () => {
         AuthAPI.logout();
-        onLogout(false)
+        setIsAuthenticated(false);
         navigate("/login")
     }
+
     return (
         <nav className="navbar navbar-expand-lg bg-light">
             <div className="container-fluid">

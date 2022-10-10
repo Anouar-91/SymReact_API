@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import axios from 'axios';
 import AuthAPI from '../services/AuthAPI'
 import { useNavigate } from "react-router-dom";
+import AuthContext from '../contexts/AuthContext';
 
-function LoginPage({onLogin, history}) {
+
+function LoginPage() {
+    const {isAuthenticated, setIsAuthenticated} = useContext(AuthContext);
     const navigate = useNavigate();
 
     const [credentials, setCredentials] = useState({
@@ -11,7 +14,6 @@ function LoginPage({onLogin, history}) {
         password: ""
     })
 
-    console.log(history)
     const [error, setError] = useState("")
 
     const handleChange = e => {
@@ -29,7 +31,7 @@ function LoginPage({onLogin, history}) {
         try {
             const token = await AuthAPI.authenticate(credentials)
             setError("")
-            onLogin(true)
+            setIsAuthenticated(true)
             navigate("/customer");
         } catch (error) {
             console.log(error.response.data)
