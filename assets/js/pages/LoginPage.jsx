@@ -1,13 +1,17 @@
 import React, { useState } from 'react'
 import axios from 'axios';
 import AuthAPI from '../services/AuthAPI'
+import { useNavigate } from "react-router-dom";
 
-function LoginPage({onLogin}) {
+function LoginPage({onLogin, history}) {
+    const navigate = useNavigate();
+
     const [credentials, setCredentials] = useState({
         username: "",
         password: ""
     })
 
+    console.log(history)
     const [error, setError] = useState("")
 
     const handleChange = e => {
@@ -26,6 +30,7 @@ function LoginPage({onLogin}) {
             const token = await AuthAPI.authenticate(credentials)
             setError("")
             onLogin(true)
+            navigate("/customer");
         } catch (error) {
             console.log(error.response.data)
             setError("Aucun compte ne correspond à ces identifiants !")

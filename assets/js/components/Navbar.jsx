@@ -1,12 +1,17 @@
 import React from 'react';
 import AuthAPI from '../services/AuthAPI';
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 
 export default function Navbar({ isAuthenticated, onLogout }) {
+
+    const navigate = useNavigate();
 
     const handleLogout = () => {
         AuthAPI.logout();
         onLogout(false)
+        navigate("/login")
     }
     return (
         <nav className="navbar navbar-expand-lg bg-light">
