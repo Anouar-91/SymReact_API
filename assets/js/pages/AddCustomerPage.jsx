@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useMatch, useParams } from 'react-router-dom';
+import { Link,  useParams, useNavigate } from 'react-router-dom';
 import Field from "../components/forms/field";
 import axios from "axios";
 
 function AddCustomerPage(props) {
     const [editing, setEditing] = useState(true);
+    const navigate = useNavigate();
+
     let { id } = useParams();
 
     const fetchCustomer = async (id) => {
@@ -56,8 +58,10 @@ function AddCustomerPage(props) {
             } else {
                 const response = await axios.post("http://127.0.0.1:8000/api/customers", customer)
                 console.log(response.data)
-                setError = ({})
+                setError({})
+                navigate("/customer");
             }
+            navigate("/customer");
 
         } catch (error) {
             const apiErrors = {}

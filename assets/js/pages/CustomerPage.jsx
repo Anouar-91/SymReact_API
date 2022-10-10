@@ -120,7 +120,7 @@ export default function CustomerPage() {
               <td >{customer.totalAmount.toLocaleString()}€</td>
               <td>
                 <button
-                  onClick={() => handleDelete3(customer.id)}
+                  onClick={() => handleDelete2(customer.id)}
                   disabled={customer.invoices.length > 0 ? true : false}
                   className="btn btn-sm btn-danger">Supprimer
                 </button>
