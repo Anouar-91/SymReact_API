@@ -36,7 +36,7 @@ export default function Navbar() {
                         {!isAuthenticated ? (
                             <>
                         <li className="nav-item">
-                        <a href="" className="nav-link">Inscription</a>
+                        <Link to="/register" className="nav-link">Inscription</Link>
                         </li>
                         <li className="nav-item">
                             <Link to={"login"} className="btn btn-success">Connexion</Link>

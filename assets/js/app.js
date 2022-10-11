@@ -25,6 +25,7 @@ import AuthContext from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import AddCustomerPage from './pages/AddCustomerPage';
 import AddInvoicePage from './pages/AddInvoicePage';
+import RegisterPage from './pages/RegisterPage';
 
 AuthAPI.setup();
 
@@ -47,6 +48,7 @@ const App = () => {
                         <Route path="/invoice" element={<InvoicePage />} />
                     </Route>
                     <Route path="/login" element={<LoginPage  />} />
+                    <Route path="/register" element={<RegisterPage  />} />
                     <Route path="/" element={<HomePage />} />
                 </Routes>
             </main>
