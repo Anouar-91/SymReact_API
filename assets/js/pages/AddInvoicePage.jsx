@@ -84,6 +84,8 @@ function AddInvoicePage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true)
+
         try {
             if (!editing) {
                 const data = await InvoicesAPI.create(invoice)
@@ -92,6 +94,8 @@ function AddInvoicePage() {
                 const response = await InvoicesAPI.update(id, invoice)
                 console.log(response);
             }
+            setLoading(false)
+
             toast.success("Enregistré avec succès")
         } catch (error) {
             toast.error("Une erreur est survenue")
@@ -101,6 +105,8 @@ function AddInvoicePage() {
                 apiErrors[violation.propertyPath] = violation.message;
             })
             setErrors(apiErrors)
+            setLoading(false)
+
         }
     }
     return (
