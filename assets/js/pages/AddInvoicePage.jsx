@@ -5,10 +5,14 @@ import Select from '../components/forms/select';
 import CustomersAPI from "../services/CustomersAPI";
 import InvoicesAPI from "../services/InvoicesAPI";
 import { toast } from 'react-toastify';
+import { ThreeDots } from 'react-loader-spinner'
+
 
 
 function AddInvoicePage() {
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
+
     const [editing, setEditing] = useState(true);
     const [invoice, setInvoice] = useState({
         amount: '',
@@ -32,6 +36,8 @@ function AddInvoicePage() {
     useEffect(() => {
         if (id === "new") {
             setEditing(false)
+            setLoading(false)
+
         } else {
             const data = fetchInvoice()
             console.log(invoice)
@@ -42,6 +48,8 @@ function AddInvoicePage() {
         try {
             const data = await InvoicesAPI.find(id);
             setInvoice({ ...invoice, amount: data.amount, status: data.status, customer: data.customer.id })
+            setLoading(false)
+
         } catch (error) {
             toast.error("Impossible de charger la facture")
             console.log(error)
@@ -102,6 +110,7 @@ function AddInvoicePage() {
             ) : (
                 <h1>Création d'une facture</h1>
             )}
+                   {!loading  ?(
             <form onSubmit={handleSubmit}>
 
                 <Field
@@ -141,6 +150,21 @@ function AddInvoicePage() {
                     <button type="submit" className="btn btn-success">Enregistrer</button>
                 </div>
             </form>
+            ):(
+          <div className="text-center">
+          <ThreeDots 
+          height="80" 
+          width="80" 
+          radius="9"
+          color="#0d6efd" 
+          ariaLabel="three-dots-loading"
+          wrapperStyle={{marginLeft:'50%', transform: 'translateX(-10%)'}}
+          wrapperClassName=""
+          visible={true}
+           />
+          </div>
+
+        )}
 
         </>
     )

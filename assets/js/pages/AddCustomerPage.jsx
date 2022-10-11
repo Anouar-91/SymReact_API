@@ -4,10 +4,13 @@ import Field from "../components/forms/field";
 import axios from "axios";
 import CustomersAPI from "../services/CustomersAPI";
 import { toast } from 'react-toastify';
+import { ThreeDots } from 'react-loader-spinner'
 
 
 function AddCustomerPage(props) {
     const [editing, setEditing] = useState(true);
+    const [loading, setLoading] = useState(true);
+
     const navigate = useNavigate();
 
     let { id } = useParams();
@@ -16,6 +19,8 @@ function AddCustomerPage(props) {
         try {
             const { firstname, lastname, email, company } =await CustomersAPI.find(id);
             setCustomer({ firstname, lastname, email, company });
+            setLoading(false)
+
         } catch (error) {
             toast.error("Une erreur est survenue lors du chargement du client")
 
@@ -26,6 +31,7 @@ function AddCustomerPage(props) {
     useEffect(() => {
         if (id === "new") {
             setEditing(false)
+            setLoading(false)
         } else {
             const data = fetchCustomer(id)
         }
@@ -87,6 +93,7 @@ function AddCustomerPage(props) {
             ) : (
                 <h1 className="mb-5">Création d'un client</h1>
             )}
+                     {!loading  ?(
             <form onSubmit={handleSubmit}>
                 <Field value={customer.lastname}
                     onChange={handleChange}
@@ -125,6 +132,21 @@ function AddCustomerPage(props) {
                     <button type="submit" className="btn btn-success">Enregistrer</button>
                 </div>
             </form>
+            ):(
+          <div className="text-center">
+          <ThreeDots 
+          height="80" 
+          width="80" 
+          radius="9"
+          color="#0d6efd" 
+          ariaLabel="three-dots-loading"
+          wrapperStyle={{marginLeft:'50%', transform: 'translateX(-10%)'}}
+          wrapperClassName=""
+          visible={true}
+           />
+          </div>
+
+        )}
         </>
     )
 }

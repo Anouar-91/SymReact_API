@@ -4,6 +4,8 @@ import InvoicesAPI from '../services/InvoicesAPI';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { ThreeDots } from 'react-loader-spinner'
+
 
 
 export default function InvoicePage() {
@@ -11,6 +13,8 @@ export default function InvoicePage() {
   const [invoices, setInvoices] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
+  const [loading, setLoading] =useState(true)
+
 
   const STATUS_CLASSES = {
     PAID: "success",
@@ -28,6 +32,8 @@ export default function InvoicePage() {
       const data = await InvoicesAPI.findAll();
       setInvoices(data)
       console.log(data)
+      setLoading(false)
+
     } catch (error) {
       toast.error("Une erreur est survenue lors du chargement des factures")
       console.log(error.response)
@@ -90,6 +96,7 @@ export default function InvoicePage() {
       <div className="form-group mb-5 mt-5">
         <input type="text" placeholder="Rechercher..." value={search} onChange={handleSearch} className="form-control" />
       </div>
+      {!loading  ?(
       <table className="table table-hover table-responsive">
         <thead>
           <tr>
@@ -126,7 +133,18 @@ export default function InvoicePage() {
 
         </tbody>
       </table>
-
+      ):(
+        <ThreeDots 
+        height="80" 
+        width="80" 
+        radius="9"
+        color="#0d6efd" 
+        ariaLabel="three-dots-loading"
+        wrapperStyle={{marginLeft:'50%', transform: 'translateX(-10%)'}}
+        wrapperClassName=""
+        visible={true}
+         />
+      )}
       <Pagination currentPage={currentPage} itemsPerPage={itemsPerPage} length={filteredInvoices.length} onPageChange={handleChangePage} />
 
 
