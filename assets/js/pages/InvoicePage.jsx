@@ -3,6 +3,8 @@ import Pagination from '../components/Pagination';
 import InvoicesAPI from '../services/InvoicesAPI';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 
 export default function InvoicePage() {
 
@@ -27,6 +29,7 @@ export default function InvoicePage() {
       setInvoices(data)
       console.log(data)
     } catch (error) {
+      toast.error("Une erreur est survenue lors du chargement des factures")
       console.log(error.response)
     }
   }
@@ -44,8 +47,10 @@ export default function InvoicePage() {
     setInvoices(invoices.filter(invoice => invoice.id !== id))
     try {
       await InvoicesAPI.delete(id)
+      toast.success("La facture a bien été supprimé")
       console.log("ok")
     } catch (error) {
+      toast.error("Une erreur est survenue")
       setInvoices(copyInvoices);
       console.log(error.response)
     }

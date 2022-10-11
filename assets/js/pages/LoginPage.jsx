@@ -4,6 +4,7 @@ import AuthAPI from '../services/AuthAPI'
 import { useNavigate } from "react-router-dom";
 import AuthContext from '../contexts/AuthContext';
 import Field from "../components/forms/field"
+import { toast } from 'react-toastify';
 
 
 function LoginPage() {
@@ -33,9 +34,11 @@ function LoginPage() {
             const token = await AuthAPI.authenticate(credentials)
             setError("")
             setIsAuthenticated(true)
+            toast.success('Vous êtes désormais connecté')
             navigate("/customer");
         } catch (error) {
             console.log(error.response.data)
+            toast.error('Une erreur est survenue')
             setError("Aucun compte ne correspond à ces identifiants !")
         }
     }

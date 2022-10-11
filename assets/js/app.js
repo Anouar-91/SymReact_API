@@ -26,6 +26,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import AddCustomerPage from './pages/AddCustomerPage';
 import AddInvoicePage from './pages/AddInvoicePage';
 import RegisterPage from './pages/RegisterPage';
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 
 AuthAPI.setup();
 
@@ -53,6 +55,7 @@ const App = () => {
                 </Routes>
             </main>
         </HashRouter>
+        <ToastContainer position="top-center" />
         </AuthContext.Provider>
 
     )

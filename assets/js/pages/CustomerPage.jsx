@@ -3,6 +3,8 @@ import Pagination from '../components/Pagination';
 import axios from 'axios';
 import CustomersAPI from '../services/CustomersAPI';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 
 export default function CustomerPage() {
 
@@ -15,6 +17,8 @@ export default function CustomerPage() {
       const data = await CustomersAPI.findAll();
       setCustomers(data)
     }catch(error){
+      toast.error("Une erreur est survenue lors du chargement des clients")
+
       console.log(error.response)
     }
   }
@@ -43,6 +47,7 @@ export default function CustomerPage() {
       await CustomersAPI.delete(id)
       console.log("ok")
     }catch(error){
+      toast.error("Une erreur est survenue")
       setCustomers(copyCustomers);
       console.log(error.response)
     }

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import Pagination from '../components/Pagination';
+import { toast } from 'react-toastify';
+
 
 export default function CustomerPageWithPagination() {
 
