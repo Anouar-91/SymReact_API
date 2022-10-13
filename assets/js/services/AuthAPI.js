@@ -1,9 +1,11 @@
 import axios from 'axios';
-import jwtDecode from 'jwt-decode'
+import jwtDecode from 'jwt-decode';
+import {API_URL} from './Config'
 
 function authenticate(credentials) {
+    console.log(API_URL, "URL " )
     return axios
-        .post("http://127.0.0.1:8000/api/login_check", credentials)
+        .post(API_URL + "login_check", credentials)
         .then(response => {
             // je stock mon token dans le local storage
             const token = response.data.token;
